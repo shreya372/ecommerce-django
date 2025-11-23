@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <!-- Meta and Title -->
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>{{ product.name }} - Product Details</title>
+
+  <!-- Favicons -->
+  <link href="{% static 'img/image2.jpg' %}" rel="icon">
+  <link href="{% static 'img/image2.jpg' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts and Vendor CSS Files -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Poppins" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  
+  <!-- Custom CSS for Additional Styling -->
+  <style>
+    .product-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover {
+      transform: scale(1.02);
+    }
+    .product-image {
+      object-fit: cover;
+      border-bottom: 1px solid #ddd;
+    }
+    .price-tag {
+      color: #007bff;
+      font-weight: bold;
+      font-size: 1.5em;
+    }
+    .add-to-cart-btn {
+      background-color: #28a745;
+      color: white;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+    .add-to-cart-btn:hover {
+      background-color: #218838;
+    }
+    .description-section {
+      font-size: 1em;
+      color: #555;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .quantity-input {
+      width: 60px;
+      padding: 5px;
+      margin-right: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="container my-5">
+  <!-- Success Message Display -->
+  {% if messages %}
+    <div class="row justify-content-center mb-3">
+      <div class="col-md-8">
+        {% for message in messages %}
+          <div class="alert alert-success" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <div class="product-card text-center">
+        
+        <!-- Product Image -->
+        <div class="text-center p-4">
+          <img src="{{ product.img.url }}" class="img-fluid product-image" alt="{{ product.name }}" style="max-height: 400px;">
+        </div>
+
+        <!-- Product Information -->
+        <div class="p-4">
+          <h2 class="mb-4">{{ product.name }}</h2>
+          <div class="price-tag mb-3">₹{{ product.price }}</div>
+
+          <!-- Description Section -->
+          <div class="description-section mb-4">
+            <p>{{ product.desc }}</p>
+          </div>
+
+          <!-- Add to Cart Section -->
+          {% if user.is_authenticated %}
+          <form method="post" action="{% url 'add_to_cart' product.pk %}">
+            {% csrf_token %}
+            
+            <button class="add-to-cart-btn" type="submit">Add to Cart</button>
+          </form>
+          {% else %}
+            <div class="alert alert-warning mt-3">
+              <strong>Notice:</strong> You must <a href="{% url 'user_login' %}" class="text-primary">log in</a> to add items to your cart.
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Vendor JS Files -->
+<script src="{% static 'vendor/aos/aos.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>
